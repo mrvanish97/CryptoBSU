@@ -3,7 +3,7 @@ package com.uonagent.cryptobsu.analyzer
 import com.uonagent.cryptobsu.language.Language
 
 class CeasarAnalyzer(val language: Language) : Analyzer<Char> {
-    override fun hack(cipherText: List<Char>, eps: Double): List<List<Char>> {
+    override fun hack(cipherText: List<Char>): List<List<Char>> {
         val size = language.alphabetSize
         val expectedFrequency = language.frequencies
         val actualFrequency = IntArray(size)
@@ -35,7 +35,7 @@ class CeasarAnalyzer(val language: Language) : Analyzer<Char> {
 
     fun hack(cipherText: String): Int {
         return try {
-            language.getCharacterPosition(hack(cipherText.toList(), 0.0)[0][0]) - 1
+            language.getCharacterPosition(hack(cipherText.toList())[0][0]) - 1
         } catch (e: IndexOutOfBoundsException) {
             -1
         }
