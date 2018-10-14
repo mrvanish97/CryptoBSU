@@ -1,8 +1,11 @@
 package com.uonagent.cryptobsu.analyzer
 
+import com.uonagent.cryptobsu.algorithm.Ceasar
 import com.uonagent.cryptobsu.language.Language
 import com.uonagent.cryptobsu.utils.GCD
+import com.uonagent.cryptobsu.utils.collectEveryNth
 import com.uonagent.cryptobsu.utils.makeString
+import com.uonagent.cryptobsu.utils.splitEveryNth
 
 class VigenereAnalyzer(val language: Language) : Analyzer<Char> {
 
@@ -36,8 +39,15 @@ class VigenereAnalyzer(val language: Language) : Analyzer<Char> {
         val ans = arrayListOf<List<Char>>()
 
         var i = sortedGCD.size - 1
+        val cesAn = CeasarAnalyzer(language)
         while (i > -1) {
-            var t = sortedGCD[i].first
+            val t = sortedGCD[i].first
+            ans.add(filtered
+                    .asSequence()
+                    .splitEveryNth(t)
+                    .map { Ceasar(cesAn.hack(it)[0][0], language).decrypt(it) }
+                    .collectEveryNth(t)
+                    .toList())
             --i
         }
 
